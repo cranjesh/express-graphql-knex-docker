@@ -1,0 +1,27 @@
+type SignInResponse {
+  bearerToken: String!
+}
+
+type QuestionAnswer {
+  questionId: Int
+  question: String
+  answer: String
+}
+
+type Questionnaire {
+  questionnaireId: Int
+  completedAt: String
+  questions: [QuestionAnswer]
+}
+
+type SignInResponse {
+  bearerToken: String!
+}
+
+type Query {
+  patientQuestionnaire(patientId: Int!): Questionnaire
+}
+
+type Mutation {
+  signIn(userId: String!, password: String!): SignInResponse
+}
