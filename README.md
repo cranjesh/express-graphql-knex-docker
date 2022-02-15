@@ -98,15 +98,3 @@ We'll be looking for:
 For extensible API and functionality, I imagine that the database schema definition could be bit different.
 Below is just a high level idea of the database schema could be
 ![](./db_schema_proposed.svg)
-
-Below were referred for consideration
-
-To see if there are any standard or common referrences of allergies or medications could be used
-
-https://www.healthdirect.gov.au/allergies
-
-https://www.nps.org.au/australian-prescriber/articles/commonly-prescribed-medications-labelling-and-advice-from-the-pharmacist-wall-chart
-
-For consumer data right, consumer consent and authorisation, data deleted or deidentified, etc
-
-https://www.oaic.gov.au/consumer-data-right
