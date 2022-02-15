@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package euc.auth;
+
+message VerifyReq {
+  string token = 1;
+}
+  
+message VerifyResp {
+  bool result = 1;
+}
+
+// Auth service definition
+service TokenAuth {
+  rpc verifyAccessToken (VerifyReq) returns (VerifyResp) {}
+}
