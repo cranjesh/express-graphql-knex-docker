@@ -3,7 +3,7 @@ import * as path from 'path';
 import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
 import 'reflect-metadata';
-import { APP_PORT } from './config';
+import { GRAPHQL_PORT } from './config';
 import { signInResolvers } from './graphql/signin'
 import { questionnaireResolvers } from './graphql/patientQuestionnaire';
 
@@ -44,6 +44,6 @@ async function startServer() {
 }
 startServer();
 
-app.listen(APP_PORT, () => {
-  console.log(`🚀 Server is running at http://localhost:${APP_PORT}`);
+app.listen(GRAPHQL_PORT, () => {
+  console.log(`🚀 Server is running at http://localhost:${GRAPHQL_PORT}`);
 });
