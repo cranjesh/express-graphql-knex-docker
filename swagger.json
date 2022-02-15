@@ -1,0 +1,167 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "description": "Euc quiz-interface API",
+        "version": "1.0.0",
+        "title": "quiz-interface API",
+        "contact": {
+            "email": "cranjesh@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "schemes": [
+        "http"
+    ],
+    "host": "localhost:8500",
+    "basePath": "/api",
+    "paths": {
+        "/signin": {
+            "post": {
+                "summary": "Sign in to get Bearer token",
+                "description": "Sign in to get Bearer token giving euc/euc",
+                "produces": [
+                    "application/json"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "signin to get bearer token",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "required": [
+                                "userId",
+                                "password"
+                            ],
+                            "properties": {
+                                "userId": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "type": "object",
+                        "required": [
+                            "bearerToken"
+                        ],
+                        "properties": {
+                            "bearerToken": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied"
+                    }
+                }
+            }
+        },
+        "/patientquestionnaire": {
+            "get": {
+                "summary": "Get patient questionnaire",
+                "description": "Get patient questionnaire giving patient id",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "signin to get bearer token",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "required": [
+                                "patientId"
+                            ],
+                            "properties": {
+                                "patientId": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "object",
+                            "required": [
+                                "questionnaireId",
+                                "completedAt",
+                                "questions"
+                            ],
+                            "properties": {
+                                "questionnaireId": {
+                                    "type": "number"
+                                },
+                                "completedAt": {
+                                    "type": "string"
+                                },
+                                "questions": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "required": [
+                                            "questionId",
+                                            "question",
+                                            "answer"
+                                        ],
+                                        "properties": {
+                                            "questionId": {
+                                                "type": "number"
+                                            },
+                                            "question": {
+                                                "type": "string"
+                                            },
+                                            "answer": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "type": "http",
+                            "schemes": "bearer"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemas": {
+            "bearerAuth": {
+                "type": "http",
+                "description": "JWT Authorization header using the Bearer scheme.",
+                "schema": "bearer",
+                "bearerFormat": "JWT",
+                "in": "header"
+            }
+        }
+    }
+}
