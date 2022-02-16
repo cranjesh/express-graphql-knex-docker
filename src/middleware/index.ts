@@ -4,11 +4,12 @@ import { ValidationError } from 'express-json-validator-middleware';
 export type HttpErrorCode = 401 | 403 | 404 | 422 | 500;
 
 export const getJwtFromRequest = (request: Request): string | undefined => {
-  const auth = request.headers.authorization;
+  const auth: string | undefined = request.headers.authorization;
   if (!auth) return;
   const authSplit = auth.split(' ');
   if (authSplit.length != 2 || authSplit[0] != 'Bearer') return;
-  return authSplit[1];
+  request.authtoken = authSplit[1];
+  return;
 };
 
 // Send an error response in standard format.
