@@ -36,12 +36,6 @@ npm run dev
 npm run graphql-gen-types && npm run dev-graphql
 ```
 
-## Context
-
-At Eucalyptus we gather information from our patients in the form of answers to questionnaires. Often a patient will answer multiple questionnaires over their time with Eucalyptus, with overlap in the questions asked.
-
-Recently engineers within Eucalyptus have expressed that they have found it complicated to utilise this data in its current format, and so we're looking at providing a simplified interface.
-
 ### Data Model
 
 ![](./db_schema.svg)
