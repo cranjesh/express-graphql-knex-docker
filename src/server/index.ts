@@ -10,6 +10,14 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import helmet from 'helmet';
 
+declare global {
+  namespace Express {
+    interface Request {
+      authtoken: string;
+    }
+  }
+}
+
 import apiRouter from '../router/api';
 import { JWT_HMAC_ALG, JWT_SECRET } from '../config';
 import {
@@ -18,6 +26,8 @@ import {
   schemaValidationError,
   unhandledErrors
 } from '../middleware';
+import * as tokenServ from '../service/token';
+import { TokenAuthApiClient } from '../grpc/client';
 
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -69,17 +79,27 @@ class Server {
     const jwtOptions = {
       secret: JWT_SECRET,
       algorithms: [JWT_HMAC_ALG],
-      requestProperty: 'auth',
       getToken: getJwtFromRequest
     };
 
     // Verify user auth JWT and only continue if valid
     this.app.use(
       jwt(jwtOptions).unless(skipAuthOn),
-      (err: Error, _req: Request, res: Response, next: NextFunction) => {
-        if (err.name === 'UnauthorizedError') {
-          sendErrResponse(res, 401, `Unauthorized`);
-          return;
+      async (err: Error, req: Request, res: Response, next: NextFunction) => {
+        // gRPC microservice client
+        const client: TokenAuthApiClient = new TokenAuthApiClient('0.0.0.0:7500');
+        try {
+          const valid: boolean = await client.verifyAccessToken(req.authtoken);
+          if (!valid) {
+            sendErrResponse(res, 401, `Unauthorized`);
+            return;
+          }
+        } catch (err) {
+          const valid: boolean = await tokenServ.verifyAccessToken(req.authtoken);
+          if (!valid) {
+            sendErrResponse(res, 401, `Unauthorized`);
+            return;
+          }
         }
         next();
       }
